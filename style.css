@@ -80,6 +80,7 @@ section {
 
 section .task-column {
     background-color: var(--bg-button-color);
+    flex-basis: 0;
     flex-grow: 1;
     padding: var(--padding-m) var(--border-radius-xl);
 
