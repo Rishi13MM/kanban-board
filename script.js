@@ -3,6 +3,9 @@
 const todoEl = document.getElementById("todo");
 const progressEl = document.getElementById("progress");
 const doneEl = document.getElementById("done");
+const modalEl = document.querySelector(".modal");
+const toggleModalButtonEl = document.getElementById("toggle-modal-btn");
+const modalBackgroundEl = document.querySelector(".modal .bg");
 
 let dragElement = null;
 
@@ -44,3 +47,12 @@ function addDragEventsOnColumn(element) {
         console.log("Task dropped!");
     });
 }
+
+
+toggleModalButtonEl.addEventListener("click", (e)=>{
+    modalEl.classList.add("active");
+});
+
+modalBackgroundEl.addEventListener("click", (e)=>{
+    modalEl.classList.remove("active");
+});
