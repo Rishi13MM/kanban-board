@@ -43,12 +43,7 @@ function addDragEventsOnColumn(element) {
         element.append(dragElement);
         element.classList.remove("hover-over");
 
-        [todoEl, progressEl, doneEl].forEach(col => {
-            const taskCountEl = col.querySelector(".right");
-            const tasksEl = col.querySelectorAll(".task");
-
-            taskCountEl.textContent = tasksEl.length;
-        });
+        updateTaskCount();
     });
 }
 
@@ -83,12 +78,14 @@ addTaskButtonEl.addEventListener("click", (e) => {
             dragElement = newTaskEl;
         });
 
+        newTaskEl.querySelector("button").addEventListener("click", (e) => {
+            newTaskEl.remove();
+            updateTaskCount();
+        })
+
         todoEl.append(newTaskEl);
 
-        // Update task counter of todo column
-        const taskCountEl = todoEl.querySelector(".right");
-        const tasksEl = todoEl.querySelectorAll(".task");
-        taskCountEl.textContent = tasksEl.length;
+        updateTaskCount();
 
         // Reset input fields
         taskTitleEl.value = "";
@@ -97,3 +94,13 @@ addTaskButtonEl.addEventListener("click", (e) => {
 
     modalEl.classList.remove("active");
 });
+
+
+function updateTaskCount() {
+    [todoEl, progressEl, doneEl].forEach(col => {
+        const taskCountEl = col.querySelector(".right");
+        const tasksEl = col.querySelectorAll(".task");
+
+        taskCountEl.textContent = tasksEl.length;
+    });
+}
