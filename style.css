@@ -51,10 +51,15 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    position: sticky;
+    top: 0;
+
+    background-color: var(--bg-color);
 }
 
 nav button {
-    border: none;
+    border: 2px solid var(--bg-task-color);
     outline: none;
     background-color: var(--bg-button-color);
     color: var(--primary-text-color);
@@ -98,11 +103,11 @@ section .task-column.hover-over{
 }
 
 section .task-column .heading{
-    /* background-color: rgba(127, 255, 212, 0.518); */
-
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    margin-bottom: var(--padding-s);
 }
 
 section .task-column .task{
