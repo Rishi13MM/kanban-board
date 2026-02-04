@@ -10,7 +10,10 @@ const addTaskButtonEl = document.getElementById("add-task-btn");
 
 const tasks = document.querySelectorAll(".task");
 let dragElement = null;
+let tasksData = {};
 
+
+addOldTasksToDom();~
 
 tasks.forEach((task) => {
     task.addEventListener("drag", (e) => {
@@ -44,6 +47,7 @@ function addDragEventsOnColumn(element) {
         element.classList.remove("hover-over");
 
         updateTaskCount();
+        updateLocalStorage();
     });
 }
 
@@ -65,27 +69,7 @@ addTaskButtonEl.addEventListener("click", (e) => {
     if (!taskTitleEl.value.trim() || !taskDescEl.value.trim()) {
         alert("No task found!");
     } else {
-        const newTaskEl = document.createElement("div");
-        newTaskEl.classList.add("task");
-        newTaskEl.setAttribute("draggable", "true");
-
-        newTaskEl.innerHTML =
-            `<h2>${taskTitleEl.value}</h2>
-                    <p>${taskDescEl.value}</p>
-                    <button>Delete</button>`
-
-        newTaskEl.addEventListener("drag", (e) => {
-            dragElement = newTaskEl;
-        });
-
-        newTaskEl.querySelector("button").addEventListener("click", (e) => {
-            newTaskEl.remove();
-            updateTaskCount();
-        })
-
-        todoEl.append(newTaskEl);
-
-        updateTaskCount();
+        addTaskToDom(taskTitleEl.value, taskDescEl.value, todoEl);
 
         // Reset input fields
         taskTitleEl.value = "";
@@ -103,4 +87,60 @@ function updateTaskCount() {
 
         taskCountEl.textContent = tasksEl.length;
     });
+}
+
+function addTaskToDom(title, desc, column) {
+    const newTaskEl = document.createElement("div");
+    newTaskEl.classList.add("task");
+    newTaskEl.setAttribute("draggable", "true");
+
+    newTaskEl.innerHTML =
+        `<h2>${title}</h2>
+                    <p>${desc}</p>
+                    <button>Delete</button>`
+
+    newTaskEl.addEventListener("drag", (e) => {
+        dragElement = newTaskEl;
+    });
+
+    newTaskEl.querySelector("button").addEventListener("click", (e) => {
+        newTaskEl.remove();
+        updateTaskCount();
+        updateLocalStorage();
+    })
+
+    column.append(newTaskEl);
+
+    updateTaskCount();
+
+    updateLocalStorage();
+
+}
+
+function updateLocalStorage(params) {
+    [todoEl, progressEl, doneEl].forEach((col) => {
+        tasksData[col.id] = Array.from(col.querySelectorAll(".task")).map((task) => {
+            return {
+                title: `${task.querySelector("h2").textContent}`,
+                description: `${task.querySelector("p").textContent}`,
+            }
+        })
+    })
+
+    localStorage.setItem("tasks", JSON.stringify(tasksData));
+}
+
+
+function addOldTasksToDom(params) {
+    if (localStorage.getItem("tasks")) {
+        const data = JSON.parse(localStorage.getItem("tasks"));
+
+        for (const key in data) {
+            const col = document.querySelector(`#${key}`);
+
+            data[key].forEach((task) => {
+                addTaskToDom(task.title, task.description, col);
+            })
+        }
+    }
 }
