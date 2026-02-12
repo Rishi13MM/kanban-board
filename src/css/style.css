@@ -193,3 +193,46 @@ section .task-column button{
     cursor: pointer;
 
 }
+
+
+
+/* ============================= */
+/* ---- Media Queries -------*/
+/* ============================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+
+    body{
+        font-size: 15px;
+    }
+    section {
+        gap: var(--padding-l);
+        padding: var(--padding-m);
+    }
+
+    nav {
+        padding: var(--padding-m);
+    }
+
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    /* Stack columns vertically */
+    section {
+        flex-direction: column;
+        gap: var(--padding-l);
+    }
+
+    section .task-column {
+        width: 100%;
+        padding: var(--padding-m);
+    }
+
+    .modal .center {
+        width: 90%;
+        padding: var(--padding-l);
+    }
+}
